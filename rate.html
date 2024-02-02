@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Buy Fucking Car</title>
+    <script>
+        function displayFormData() {
+            event.preventDefault();
+
+            //分期比例
+            var installment = document.getElementById('installment').value.replace("%","") / 100;
+            //贷款年限
+            var loanTerm = document.getElementById('loan-term').value;
+            //裸车
+            var carPrice = parseInt(document.getElementById('car-price').value);
+            //月供
+            var monthgive = parseInt(document.getElementById('month-give').value);
+            //---------------------------------------------
+            //贷款金额
+            var loanAmount = Math.round((1 - installment) *  carPrice);
+            //每月利息
+            var month_interest = Math.round(monthgive - loanAmount / loanTerm / 12);
+            if(month_interest <= 0)
+            {
+                alert("每月月供低于每月需偿还本金!");
+                return;
+            }
+            var resultTable = '<table border="1"><tr><th>贷款金额</th><th>每月利息</th><th>年利率</th></tr>';
+            resultTable += '<tr><td>'+ loanAmount +'</td><td>' 
+                + month_interest + '</td><td>' 
+                + month_interest * loanTerm * 12 / (loanAmount * loanTerm)
+                + '</td></tr></table>';
+            // 显示表格
+            document.getElementById('result').innerHTML = resultTable;
+        }
+        </script>
+</head>
+<body>
+    <h2>计算年利率</h2>
+    <form onsubmit="displayFormData();">
+      <!-- 分期比例选择框 -->
+      <label for="installment">分期比例:</label>
+      <select name="installment" id="installment">
+        <option value="0%">0%</option>
+        <option value="10%">10%</option>
+        <option value="20%">20%</option>
+        <option value="30%"selected>30%</option>
+        <option value="40%">40%</option>
+        <option value="50%">50%</option>
+        <option value="60%">60%</option>
+        <option value="70%">70%</option>
+        <option value="80%">80%</option>
+        <option value="90%">90%</option>
+      </select>
+      <br><br>
+      <!-- 贷款年限选择框 -->
+      <label for="loan-term">贷款年限:</label>
+      <select name="loan-term" id="loan-term">
+        <option value=1>1年(12月)</option>
+        <option value=2>2年(24月)</option>
+        <option value=3 selected>3年(36月)</option>
+        <option value=4>4年(48月)</option>
+        <option value=5>5年(60月)</option>
+      </select>
+      <br><br>
+      <!-- 裸车价格输入框 -->
+      <label for="car-price">裸车价格:</label>
+      <input type="number" id="car-price" name="car-price" placeholder="请输入裸车价格" step="100" value="422500"><br><br>
+
+      <!-- 每月月供输入框 -->
+      <label for="month-give">每月月供:</label>
+      <input type="number" id="month-give" name="month-give" placeholder="请输入每月月供" step="1" value="9398"><br><br>
+
+      <input type="submit" value="提交">
+    </form>
+    <div id="result"></div>
+</body>
+</html>
