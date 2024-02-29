@@ -1,0 +1,7 @@
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* 使用视口高度确保父容器足够高以允许垂直居中 */
+  }

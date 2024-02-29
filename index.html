@@ -1,6 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="index.css">
     <title>Buy Fucking Car</title>
     <script>
         function displayFormData() {
@@ -14,8 +15,10 @@
             var insuranceCost = parseInt(document.getElementById('insurance-cost').value);
             //综合上牌
             var totalCost = parseInt(document.getElementById('total-cost').value);
-            //年化利率
+            //年化利率(费率)
             var annualRate = parseFloat(document.getElementById('annual-rate').value);
+            //年化利率(LPR)
+            var LPRrate = parseFloat(document.getElementById('lpr-rate').value);
             //分期比例
             var installment = document.getElementById('installment').value.replace("%","") / 100;
             //贷款年限
@@ -45,6 +48,13 @@
             //创建贷款表格
             var loanDataTable = '<table border="1"><tr><th>期数</th><th>剩余本金</th><th>偿还本金</th><th>当月利息</th><th>当月月供</th></tr>';
            
+            //判断计算方式
+            var rateCalculationYes = document.getElementById('rate-calculation-yes').checked;
+
+            if(!rateCalculationYes)
+            {
+                annualRate = LPRrate / (loanTerm*12) / 24 * (loanTerm * 12 + 1) *12 / 100;
+            }
             if(loanPlan == "plan1")//等本等息
             {
                 //alert("plan1");
@@ -125,7 +135,6 @@
         </script>
 </head>
 <body>
-
     <h2>贷款方式及购车项目仅供内部测试使用</h2>
     <form onsubmit="displayFormData();">
       <!-- 分期比例选择框 -->
@@ -161,18 +170,18 @@
         <option value="plan3">等额本息</option>
       </select>
       <br><br>
-      <!-- 年化利率输入框 -->
-      <label for="annual-rate">年化利率:</label>
-      <input type="number" id="annual-rate" name="annual-rate" placeholder="请输入年化利率" step="0.0001" value="0.0481"><br><br>
-      
+      <!-- 年化利率(费率)输入框 -->
+      <label for="annual-rate">年化利率(费率):</label>
+      <input type="number" id="annual-rate" name="annual-rate" placeholder="请输入年化利率" step="0.0001" value="0.048"><br><br>
+      <!-- 年化利率(LPR)输入框 -->
+      <label for="lpr-rate">年化利率(LPR):</label>
+      <input type="number" id="lpr-rate" name="lpr-rate" placeholder="请输入年化利率" step="0.0001" value="9.4426"><br><br>
       <!-- 裸车价格输入框 -->
       <label for="car-price">裸车价格:</label>
       <input type="number" id="car-price" name="car-price" placeholder="请输入裸车价格" step="100" value="529800"><br><br>
-    
       <!-- 保险费用输入框 -->
       <label for="insurance-cost">保险费用:</label>
       <input type="number" id="insurance-cost" name="insurance-cost" placeholder="请输入保险费用" step="100" value="15000"><br><br>
-    
       <!-- 综合费用输入框 -->
       <label for="total-cost">综合费用:</label>
       <input type="number" id="total-cost" name="total-cost" placeholder="请输入综合费用" step="100" value="0"><br><br>
@@ -183,15 +192,19 @@
       <input type="radio" id="tax-exemption-no" name="tax-exemption" value="no" checked>
       <label for="tax-exemption-no">否</label><br><br>
     
+      <label for="rate-calculation">费率计算:</label>
+      <input type="radio" id="rate-calculation-yes" name="rate-calculation" value="yes">
+      <label for="rate-calculation-yes">是</label>
+      <input type="radio" id="rate-calculation-no" name="rate-calculation" value="no" checked>
+      <label for="rate-calculation-no">否</label><br><br>
 
       <input type="submit" value="提交">
       <button id="myButton">年利率计算</button>
-
-<script>
-document.getElementById('myButton').addEventListener('click', function() {
-    window.location.href = 'rate.html';
-});
-</script>
+      <script>
+        document.getElementById('myButton').addEventListener('click', function() {
+            window.location.href = 'rate.html';
+        });
+    </script>
     </form>
     <div id="result"></div>
 </body>
